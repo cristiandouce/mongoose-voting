@@ -1,0 +1,30 @@
+{
+  "author": "Cristian Douce",
+  "name": "mongoose-voting",
+  "version": "0.1.0",
+  "description": "Mongoose plugin for upvote/downvote models. Extends Mongoose model with voting functionality.",
+  "main": "index.js",
+  "dependencies": {
+    "mongoose": "~3.6.11"
+  },
+  "devDependencies": {
+    "mongoose": "2.7.0",
+    "mocha": "1.11.0"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cristiandouce/mongoose-voting.git"
+  },
+  "keywords": [
+    "vote",
+    "voting",
+    "mongoose",
+    "upvote",
+    "downvote",
+    "census"
+  ],
+  "license": "MIT"
+}
