@@ -2,6 +2,8 @@
 
   Mongoose plugin to upvote/downvote stuff. Extends any model with handy methods for voting.
 
+  [![Build Status](https://travis-ci.org/cristiandouce/mongoose-voting.png?branch=master)](https://travis-ci.org/cristiandouce/mongoose-voting)
+
 ## Install
 
 ```
