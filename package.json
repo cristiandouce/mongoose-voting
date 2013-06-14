@@ -4,11 +4,9 @@
   "version": "0.1.0",
   "description": "Mongoose plugin for upvote/downvote models. Extends Mongoose model with voting functionality.",
   "main": "index.js",
-  "dependencies": {
-    "mongoose": "~3.6.11"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "mongoose": "2.7.0",
+    "mongoose": "~3.6.11",
     "mocha": "1.11.0"
   },
   "scripts": {
