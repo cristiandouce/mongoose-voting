@@ -95,8 +95,9 @@
   Returns `true` if document was 'upvoted' or 'downvoted' by user. `false` otherwise.
 ```js
   comment.downvote(user);
-  comment.upvoted(user);    // false
-  comment.downvoted(user);  // true
+  comment.voted(user);    // true
+  comment.upvote(user);
+  comment.voted(user);    // true
 ```
 
 ## Test
