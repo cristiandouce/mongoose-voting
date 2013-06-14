@@ -102,6 +102,35 @@
   comment.voted(user);    // true
 ```
 
+### .upvotes()
+  Returns Number of `upvotes` count.
+```js
+  comment.downvote(user);
+  comment.upvotes();      // 0
+  comment.upvote(user);
+  comment.upvotes();      // 1
+```
+
+### .downvotes()
+  Returns Number of `downvotes` count.
+```js
+  comment.downvote(user);
+  comment.upvotes();      // 1
+  comment.upvote(user);
+  comment.upvotes();      // 0
+```
+
+### .votes()
+  Returns Number of `votes` count.
+```js
+  comment.downvote(user);
+  comment.votes();          // 1
+  comment.upvote(user);
+  comment.votes();          // 1
+  comment.downvote(user2);
+  comment.votes();          // 2
+```
+
 ## Test
 
 ```

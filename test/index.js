@@ -233,6 +233,57 @@ describe('voting', function () {
     });
   });
 
+  describe('upvotes', function() {
+    it('should retrieve one vote per user upvoting', function(done) {
+      var author2 = new User({ name: 'Jorge' });
+      
+      comment.downvote(author);
+      assert.equal(0, comment.upvotes());
+
+      comment.upvote(author2);
+      assert.equal(1, comment.upvotes());
+
+      comment.upvote(author);
+      assert.equal(2, comment.upvotes());
+
+      done();
+    });
+  });
+
+  describe('downvotes', function() {
+    it('should retrieve one vote per user downvoting', function(done) {
+      var author2 = new User({ name: 'Jorge' });
+      
+      comment.upvote(author);
+      assert.equal(0, comment.downvotes());
+
+      comment.downvote(author2);
+      assert.equal(1, comment.downvotes());
+
+      comment.downvote(author);
+      assert.equal(2, comment.downvotes());
+
+      done();
+    });
+  });
+
+  describe('votes', function() {
+    it('should retrieve one vote per user voting', function(done) {
+      var author2 = new User({ name: 'Jorge' });
+      
+      comment.upvote(author);
+      assert.equal(1, comment.votes());
+
+      comment.downvote(author2);
+      assert.equal(2, comment.votes());
+
+      comment.downvote(author);
+      assert.equal(2, comment.votes());
+
+      done();
+    });
+  });
+
   after(function () {
     // Clear database after tests
     mongoose.connection.db.dropDatabase(function (err) {

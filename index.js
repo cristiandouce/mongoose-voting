@@ -82,4 +82,18 @@ function voting (schema, options) {
 
     return !!~this.vote.census.indexOf(user);
   }
+
+  schema.methods.upvotes = function upvotes() {
+    return this.vote.positive.length;
+  }
+
+  schema.methods.downvotes = function upvotes() {
+    return this.vote.negative.length;
+  }
+
+  schema.methods.votes = function upvotes() {
+    return this.vote.census.length;
+  }
+
+
 }
