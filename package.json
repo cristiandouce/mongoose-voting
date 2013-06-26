@@ -2,7 +2,7 @@
   "author": "Cristian Douce",
   "name": "mongoose-voting",
   "version": "0.1.1",
-  "description": "Mongoose plugin for upvote/downvote models. Extends Mongoose model with voting functionality.",
+  "description": "Mongoose plugin to upvote/downvote stuff. Extends any model with handy methods for voting.",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
