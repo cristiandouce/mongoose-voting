@@ -4,6 +4,7 @@
 
 var mongoose = require('mongoose')
   , ObjectId = mongoose.Schema.ObjectId;
+
 /**
  * Expose mongoose voting
  */
