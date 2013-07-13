@@ -34,7 +34,7 @@
 
   // downvote with save
   comment.downvote(author, function(err, doc) {
-    asser.equal(doc, comment);  // true
+    assert.equal(doc, comment);  // true
     doc.downvoted(author);      // true
   });
 
