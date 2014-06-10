@@ -57,6 +57,16 @@ function voting (schema, options) {
     };
   };
 
+  schema.methods.unvote = function unvote(user, fn) {
+    this.vote.negative.pull(user);
+    this.vote.positive.pull(user);
+
+    // If callback fn, save and return
+    if (2 === arguments.length) {
+      this.save(fn);
+    };
+  }
+
   schema.methods.upvoted = function upvoted(user) {
     if (user._id) {
       return schema.methods.upvoted.call(this, user._id);

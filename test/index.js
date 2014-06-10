@@ -181,6 +181,48 @@ describe('voting', function () {
 
   });
 
+  describe.only('unvote', function() {
+    it('should unvote', function(done) {
+      var author2 = new User({ name: 'Jorge' });
+
+      comment.upvote(author);
+      comment.downvote(author2);
+
+      assert.equal(author.id, comment.vote.positive[0]);
+      assert.equal(author2.id, comment.vote.negative[0]);
+
+      comment.unvote(author);
+      assert.equal(0, comment.vote.positive.length);
+      assert.equal(1, comment.vote.negative.length);
+
+      comment.unvote(author2);
+      assert.equal(0, comment.vote.positive.length);
+      assert.equal(0, comment.vote.negative.length);
+
+      done();
+    });
+
+    it('should save document when callback fn is provided', function(done) {
+      // give mongo a little extra time.
+      this.timeout(5000);
+
+      comment.upvote(author, function (err, doc) {
+        assert.equal(comment, doc);
+
+        comment.unvote(author, function(err, doc) {
+          if (err) {
+            return done(err)
+          };
+
+          assert.equal(doc, comment);
+
+          done();
+        });
+
+      });
+    });
+  });
+
   describe('upvoted', function() {
     it('should success if voted positive', function(done) {
       comment.upvote(author);
