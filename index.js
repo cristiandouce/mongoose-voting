@@ -27,8 +27,7 @@ function voting (schema, options) {
   schema.add({
     vote: {
       positive: [{ type: ObjectId, ref: voterModelName }],
-      negative: [{ type: ObjectId, ref: voterModelName }],
-      census: [{ type: ObjectId, ref: voterModelName }]
+      negative: [{ type: ObjectId, ref: voterModelName }]
     }
   });
 
@@ -38,7 +37,6 @@ function voting (schema, options) {
 
     // Upvote
     this.vote.positive.addToSet(user);
-    this.vote.census.addToSet(user);
 
     // If callback fn, save and return
     if (2 === arguments.length) {
@@ -52,7 +50,6 @@ function voting (schema, options) {
 
     // Downvote
     this.vote.negative.addToSet(user);
-    this.vote.census.addToSet(user);
 
     // If callback fn, save and return
     if (2 === arguments.length) {
@@ -81,7 +78,7 @@ function voting (schema, options) {
       return schema.methods.voted.call(this, user._id);
     };
 
-    return !!~this.vote.census.indexOf(user);
+    return schema.methods.upvoted(user) || schema.methods.downvoted(user);
   }
 
   schema.methods.upvotes = function upvotes() {
@@ -93,8 +90,9 @@ function voting (schema, options) {
   }
 
   schema.methods.votes = function upvotes() {
-    return this.vote.census.length;
+    var positives = this.vote.positive;
+    var negatives = this.vote.negative;
+    return [].concat(positives).concat(negatives).length;
   }
-
 
 }

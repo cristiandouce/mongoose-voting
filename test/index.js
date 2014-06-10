@@ -44,8 +44,7 @@ describe('voting', function () {
   beforeEach(function() {
     author = new User({ name: 'Cristian' });
     comment = new Comment({ text: 'Hey, this is a comment!', author: author });
-  
-    assert.equal(0, comment.vote.census.length);
+
     assert.equal(0, comment.vote.positive.length);
     assert.equal(0, comment.vote.negative.length);
   });
@@ -55,10 +54,8 @@ describe('voting', function () {
 
       comment.upvote(author);
       assert.equal(1, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
       assert.equal(0, comment.vote.negative.length);
 
-      assert.equal(comment.vote.positive[0], comment.vote.census[0]);
 
       done();
     });
@@ -68,22 +65,18 @@ describe('voting', function () {
       comment.upvote(author);
       comment.upvote(author);
       assert.equal(1, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
       assert.equal(0, comment.vote.negative.length);
 
       done();
     });
 
     it('should change vote from negative to positive', function(done) {
-      
+
       comment.vote.negative.addToSet(author);
-      comment.vote.census.addToSet(author);
       assert.equal(1, comment.vote.negative.length);
-      assert.equal(1, comment.vote.census.length);
 
       comment.upvote(author);
       assert.equal(1, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
       assert.equal(0, comment.vote.negative.length);
 
       done();
@@ -97,7 +90,7 @@ describe('voting', function () {
         if (err) {
           return done(err)
         };
-        
+
         assert.equal(doc, comment);
 
         done();
@@ -112,9 +105,8 @@ describe('voting', function () {
         if (err) {
           return done(err)
         };
-        
+
         assert.equal(1, comment.vote.positive.length);
-        assert.equal(1, comment.vote.census.length);
         assert.equal(0, comment.vote.negative.length);
 
         done();
@@ -129,10 +121,7 @@ describe('voting', function () {
 
       comment.downvote(author);
       assert.equal(0, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
       assert.equal(1, comment.vote.negative.length);
-
-      assert.equal(comment.vote.negative[0], comment.vote.census[0]);
 
       done();
     });
@@ -142,22 +131,18 @@ describe('voting', function () {
       comment.downvote(author);
       comment.downvote(author);
       assert.equal(0, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
       assert.equal(1, comment.vote.negative.length);
 
       done();
     });
 
     it('should change vote from positive to negative', function(done) {
-      
+
       comment.vote.positive.addToSet(author);
-      comment.vote.census.addToSet(author);
       assert.equal(1, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
 
       comment.downvote(author);
       assert.equal(0, comment.vote.positive.length);
-      assert.equal(1, comment.vote.census.length);
       assert.equal(1, comment.vote.negative.length);
 
       done();
@@ -171,7 +156,7 @@ describe('voting', function () {
         if (err) {
           return done(err)
         };
-        
+
         assert.equal(doc, comment);
 
         done();
@@ -186,9 +171,8 @@ describe('voting', function () {
         if (err) {
           return done(err)
         };
-        
+
         assert.equal(0, comment.vote.positive.length);
-        assert.equal(1, comment.vote.census.length);
         assert.equal(1, comment.vote.negative.length);
 
         done();
@@ -236,7 +220,7 @@ describe('voting', function () {
   describe('upvotes', function() {
     it('should retrieve one vote per user upvoting', function(done) {
       var author2 = new User({ name: 'Jorge' });
-      
+
       comment.downvote(author);
       assert.equal(0, comment.upvotes());
 
@@ -253,7 +237,7 @@ describe('voting', function () {
   describe('downvotes', function() {
     it('should retrieve one vote per user downvoting', function(done) {
       var author2 = new User({ name: 'Jorge' });
-      
+
       comment.upvote(author);
       assert.equal(0, comment.downvotes());
 
@@ -270,7 +254,7 @@ describe('voting', function () {
   describe('votes', function() {
     it('should retrieve one vote per user voting', function(done) {
       var author2 = new User({ name: 'Jorge' });
-      
+
       comment.upvote(author);
       assert.equal(1, comment.votes());
 
