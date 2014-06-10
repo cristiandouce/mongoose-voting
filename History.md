@@ -1,4 +1,16 @@
 
+0.2.0 / 2014-06-10
+==================
+
+ * Add new `unvote` method to cancel votes
+ * Update to no longer support `vote.census` array
+ * Update makefile
+ * Merge branch 'master' of github.com:cristiandouce/mongoose-voting
+ * Remove node@0.6.x from supported versions
+ * Update README.md typo
+ * Update package.json module description
+ * Spacing
+
 0.1.1 / 2013-06-14 
 ==================
 
