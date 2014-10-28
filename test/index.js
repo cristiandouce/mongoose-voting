@@ -181,7 +181,7 @@ describe('voting', function () {
 
   });
 
-  describe.only('unvote', function() {
+  describe('unvote', function() {
     it('should unvote', function(done) {
       var author2 = new User({ name: 'Jorge' });
 
@@ -264,13 +264,13 @@ describe('voting', function () {
       var author2 = new User({ name: 'Jorge' });
 
       comment.downvote(author);
-      assert.equal(0, comment.upvotes());
+      assert.equal(0, comment.upvotes);
 
       comment.upvote(author2);
-      assert.equal(1, comment.upvotes());
+      assert.equal(1, comment.upvotes);
 
       comment.upvote(author);
-      assert.equal(2, comment.upvotes());
+      assert.equal(2, comment.upvotes);
 
       done();
     });
@@ -281,13 +281,13 @@ describe('voting', function () {
       var author2 = new User({ name: 'Jorge' });
 
       comment.upvote(author);
-      assert.equal(0, comment.downvotes());
+      assert.equal(0, comment.downvotes);
 
       comment.downvote(author2);
-      assert.equal(1, comment.downvotes());
+      assert.equal(1, comment.downvotes);
 
       comment.downvote(author);
-      assert.equal(2, comment.downvotes());
+      assert.equal(2, comment.downvotes);
 
       done();
     });
@@ -298,13 +298,30 @@ describe('voting', function () {
       var author2 = new User({ name: 'Jorge' });
 
       comment.upvote(author);
-      assert.equal(1, comment.votes());
+      assert.equal(1, comment.votes);
 
       comment.downvote(author2);
-      assert.equal(2, comment.votes());
+      assert.equal(2, comment.votes);
 
       comment.downvote(author);
-      assert.equal(2, comment.votes());
+      assert.equal(2, comment.votes);
+
+      done();
+    });
+  });
+  
+  describe('voteScore', function() {
+    it('should calculate the correct score', function(done) {
+      var author2 = new User({ name: 'Jorge' });
+
+      comment.upvote(author);
+      assert.equal(1, comment.voteScore);
+
+      comment.downvote(author2);
+      assert.equal(0, comment.voteScore);
+
+      comment.downvote(author);
+      assert.equal(-2, comment.voteScore);
 
       done();
     });

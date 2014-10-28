@@ -91,18 +91,22 @@ function voting (schema, options) {
     return schema.methods.upvoted(user) || schema.methods.downvoted(user);
   }
 
-  schema.methods.upvotes = function upvotes() {
+  schema.virtual('upvotes').get(function upvotes() {
     return this.vote.positive.length;
-  }
+  });
 
-  schema.methods.downvotes = function upvotes() {
+  schema.virtual('downvotes').get(function downvotes() {
     return this.vote.negative.length;
-  }
+  });
 
-  schema.methods.votes = function upvotes() {
+  schema.virtual('votes').get(function votes() {
     var positives = this.vote.positive;
     var negatives = this.vote.negative;
     return [].concat(positives).concat(negatives).length;
-  }
+  });
+  
+  schema.virtual('voteScore').get(function voteScore() {
+    return this.upvotes - this.downvotes;
+  });
 
 }
