@@ -77,6 +77,25 @@
   });
 ```
 
+### .unvote(user)
+  Retracts vote on document by user. `user` can be either a model instance (like `User`), an `ObjectId` or even the hex string from `ObjectId`.
+```js
+  comment.upvote(author);
+  comment.voted(author);    // true
+  comment.unvote(author);
+  comment.voted(author);    // false
+```
+
+### .unvote(user, fn)
+  Same as `.uvote(user)` but calls `save` on model with `fn` function as callback.
+```js
+  comment.unvote(author, function(err, doc) {
+    doc.voted(author);      // false
+    doc.downvoted(author);  // false
+    doc.upvoted(author);    // false
+  });
+```
+
 ### .upvoted(user)
   Returns `true` if document was 'upvoted' by user. `false` otherwise.
 ```js
@@ -102,33 +121,45 @@
   comment.voted(user);    // true
 ```
 
-### .upvotes()
+### .upvotes
   Returns Number of `upvotes` count.
 ```js
   comment.downvote(user);
-  comment.upvotes();      // 0
+  comment.upvotes;      // 0
   comment.upvote(user);
-  comment.upvotes();      // 1
+  comment.upvotes;      // 1
 ```
 
-### .downvotes()
+### .downvotes
   Returns Number of `downvotes` count.
 ```js
   comment.downvote(user);
-  comment.upvotes();      // 1
+  comment.downvotes;      // 1
   comment.upvote(user);
-  comment.upvotes();      // 0
+  comment.downvotes;      // 0
 ```
 
-### .votes()
-  Returns Number of `votes` count.
+### .votes
+  Returns Number of unique `votes` count.
 ```js
   comment.downvote(user);
-  comment.votes();          // 1
+  comment.votes;          // 1
   comment.upvote(user);
-  comment.votes();          // 1
+  comment.votes;          // 1
   comment.downvote(user2);
-  comment.votes();          // 2
+  comment.votes;          // 2
+```
+
+### .voteScore
+  Returns Number of `upvotes` count minus the number of `downvotes` count.
+```js
+  comment.voteScore;          // 0
+  comment.upvote(user);
+  comment.voteScore;          // 1
+  comment.downvote(user2);
+  comment.voteScore;          // 0
+  comment.downvote(user3);
+  comment.voteScore;          // -1
 ```
 
 ## Test
