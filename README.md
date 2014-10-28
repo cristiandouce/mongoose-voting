@@ -156,9 +156,9 @@
   comment.voteScore;          // 0
   comment.upvote(user);
   comment.voteScore;          // 1
-  comment.downvote(user);
-  comment.voteScore;          // 0
   comment.downvote(user2);
+  comment.voteScore;          // 0
+  comment.downvote(user3);
   comment.voteScore;          // -1
 ```
 
