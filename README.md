@@ -77,6 +77,15 @@
   });
 ```
 
+### .unvote(user)
+  Cancels any vote cast by user. `user` can be either a model instance (like `User`), an `ObjectId` or even the hex string from `ObjectId`.
+```js
+  comment.upvote(author);
+  comment.voted(author);    // true
+  comment.unvote(author);
+  comment.voted(author);    // false
+```
+
 ### .upvoted(user)
   Returns `true` if document was 'upvoted' by user. `false` otherwise.
 ```js
