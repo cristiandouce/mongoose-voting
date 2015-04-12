@@ -181,7 +181,7 @@ describe('voting', function () {
 
   });
 
-  describe.only('unvote', function() {
+  describe('unvote', function() {
     it('should unvote', function(done) {
       var author2 = new User({ name: 'Jorge' });
 
