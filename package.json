@@ -1,7 +1,7 @@
 {
   "author": "Cristian Douce",
   "name": "mongoose-voting",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Mongoose plugin to upvote/downvote stuff. Extends any model with handy methods for voting.",
   "main": "index.js",
   "dependencies": {},
