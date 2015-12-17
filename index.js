@@ -88,7 +88,7 @@ function voting (schema, options) {
       return schema.methods.voted.call(this, user._id);
     };
 
-    return schema.methods.upvoted(user) || schema.methods.downvoted(user);
+    return schema.methods.upvoted.call(this, user) || schema.methods.downvoted.call(this, user);
   }
 
   schema.methods.upvotes = function upvotes() {
