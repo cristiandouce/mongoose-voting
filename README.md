@@ -155,6 +155,26 @@
   $ npm install --dev
   $ make test
 ```
+
+## FAQ
+
+### How to work with sub documents?
+
+```js
+Article.findById(req.params.article_id, function(err, article) {
+    var comment = article.comments.id(req.params.comment_id);
+
+    comment.upvote(req.user._id); // <- this is the key
+
+    article.save(function(err) {
+      if (err) {
+        return res.status(500).json({ error: 'Cannot save the challenge idea ' + err });
+      }
+      return res.json(comment);
+    });
+});
+```
+
 ## License
 
   MIT
