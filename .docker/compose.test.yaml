@@ -1,0 +1,18 @@
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: mongoose-voting-tests
+    healthcheck:
+      test: mongosh localhost:27017/test --quiet --eval 'db.runCommand("ping").ok'
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
