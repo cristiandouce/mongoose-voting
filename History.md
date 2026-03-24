@@ -1,4 +1,16 @@
 
+1.0.0 / 2026-03-22
+==================
+
+  * BREAKING: Requires Node >= 20 and mongoose >= 9.0.0
+  * BREAKING: Callback overload removed from upvote/downvote/unvote
+  * Rewritten in TypeScript with full type exports
+  * Dual ESM/CJS build via package exports
+  * Migrated from mocha to Jest (unit + integration tests)
+  * Migrated CI from Travis CI to GitHub Actions
+  * Fixed: vote arrays now default to [] preventing undefined errors
+  * Added: Docker Compose for local MongoDB development
+
 0.3.0 / 2015-12-17
 ==================
 

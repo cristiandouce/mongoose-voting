@@ -2,7 +2,7 @@
 
   Mongoose plugin to upvote/downvote stuff. Extends any model with handy methods for voting.
 
-  [![Build Status](https://travis-ci.org/cristiandouce/mongoose-voting.png?branch=master)](https://travis-ci.org/cristiandouce/mongoose-voting)
+  [![CI](https://github.com/cristiandouce/mongoose-voting/actions/workflows/ci.yml/badge.svg)](https://github.com/cristiandouce/mongoose-voting/actions/workflows/ci.yml)
 
 ## Install
 
@@ -13,7 +13,9 @@
 ## Usage example
 
 ```js
-  var CommentSchema = new Schema({..});
+  const voting = require('mongoose-voting');
+
+  const CommentSchema = new Schema({..});
 
   // Default voter is `User` model
   CommentSchema.plugin(voting);
@@ -24,21 +26,34 @@
 
   // ...
 
-  var author = new Author({});
-  var comment = new Comment({});
+  const author = new Author({});
+  const comment = new Comment({});
 
   // upvote and check
   comment.upvote(author);
   comment.upvoted(author);      // true
   comment.downvoted(author);    // false
 
-  // downvote with save
-  comment.downvote(author, function(err, doc) {
-    assert.equal(doc, comment);  // true
-    doc.downvoted(author);      // true
-  });
+  // downvote and save
+  comment.downvote(author);
+  await comment.save();
 
   comment.voted(author);        // true
+```
+
+### TypeScript
+
+```ts
+  import voting, { VotingDocument } from 'mongoose-voting';
+
+  const CommentSchema = new Schema({ text: String });
+  CommentSchema.plugin(voting, { ref: 'User' });
+
+  type CommentDoc = VotingDocument<{ text: string }>;
+
+  const comment = new Comment({ text: 'Hello' }) as CommentDoc;
+  comment.upvote(author);
+  comment.upvoted(author);  // true
 ```
 
 ## API
@@ -51,43 +66,16 @@
   comment.upvoted(author);  // true
 ```
 
-### .upvote(user, fn)
-  Same as `.upvote(user)` but calls `save` on model with `fn` function as callback.
-```js
-  comment.upvote(author, function(err, doc) {
-    doc.voted(author);    // true
-    doc.upvoted(author);  // true
-  });
-```
-
 ### .downvote(user)
   Downvotes document by user. `user` can be either a model instance (like `User`), an `ObjectId` or even the hex string from `ObjectId`.
 ```js
-  comment.upvote(author);
-  comment.voted(author);    // true
-  comment.upvoted(author);  // true
-```
-
-### .downvote(user, fn)
-  Same as `.downvote(user)` but calls `save` on model with `fn` function as callback.
-```js
-  comment.downvote(author, function(err, doc) {
-    doc.voted(author);      // true
-    doc.downvoted(author);  // true
-  });
+  comment.downvote(author);
+  comment.voted(author);      // true
+  comment.downvoted(author);  // true
 ```
 
 ### .unvote(user)
   Cancels any vote cast by user. `user` can be either a model instance (like `User`), an `ObjectId` or even the hex string from `ObjectId`.
-```js
-  comment.upvote(author);
-  comment.voted(author);    // true
-  comment.unvote(author);
-  comment.voted(author);    // false
-```
-
-### .unvote(user, fn)
-  Same as `.unvote(user)` but calls `save` on model with `fn` function as callback.
 ```js
   comment.upvote(author);
   comment.voted(author);    // true
@@ -133,9 +121,9 @@
   Returns Number of `downvotes` count.
 ```js
   comment.downvote(user);
-  comment.upvotes();      // 1
+  comment.downvotes();    // 1
   comment.upvote(user);
-  comment.upvotes();      // 0
+  comment.downvotes();    // 0
 ```
 
 ### .votes()
@@ -149,11 +137,31 @@
   comment.votes();          // 2
 ```
 
-## Test
+## Saving
 
+All voting methods modify the document in memory. Call `save()` to persist:
+
+```js
+  comment.upvote(author);
+  await comment.save();
 ```
-  $ npm install --dev
-  $ make test
+
+## Development
+
+```bash
+  # Install dependencies
+  $ npm install
+
+  # Build (ESM + CJS)
+  $ npm run build
+
+  # Run unit tests
+  $ npm run test:unit
+
+  # Run integration tests (requires Docker)
+  $ npm run test:integration:setup
+  $ npm run test:integration
+  $ npm run test:integration:teardown
 ```
 
 ## FAQ
@@ -161,19 +169,25 @@
 ### How to work with sub documents?
 
 ```js
-Article.findById(req.params.article_id, function(err, article) {
-    var comment = article.comments.id(req.params.comment_id);
+const article = await Article.findById(req.params.article_id);
+const comment = article.comments.id(req.params.comment_id);
 
-    comment.upvote(req.user._id); // <- this is the key
+comment.upvote(req.user._id);
 
-    article.save(function(err) {
-      if (err) {
-        return res.status(500).json({ error: 'Cannot save the challenge idea ' + err });
-      }
-      return res.json(comment);
-    });
-});
+await article.save();
+return res.json(comment);
 ```
+
+## Migrating from 0.x
+
+v1.0.0 is a major rewrite. Key changes:
+
+- **mongoose >= 9.0.0** required (was ^3.6.11)
+- **Node >= 20** required (was 0.10+)
+- **TypeScript types** now available: `VotingDocument`, `VotingMethods`, `VoterInput`
+- **ESM and CJS** both supported via package exports
+- **Callback overload removed**: `upvote(user, fn)` no longer exists. Use `comment.upvote(user); await comment.save();` instead.
+- **Vote arrays default to `[]`**: Fixes the old "Cannot read property 'positive' of undefined" bug.
 
 ## License
 

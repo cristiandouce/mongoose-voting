@@ -1,20 +1,41 @@
 {
-  "author": "Cristian Douce",
   "name": "mongoose-voting",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Mongoose plugin to upvote/downvote stuff. Extends any model with handy methods for voting.",
-  "main": "index.js",
-  "dependencies": {},
-  "devDependencies": {
-    "mongoose": "^3.6.11",
-    "mocha": "1.11.0"
+  "author": "Cristian Douce",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
   "scripts": {
-    "test": "make test"
+    "build": "npm run build:clean && npm run build:esm && npm run build:cjs",
+    "build:clean": "rm -rf dist",
+    "build:esm": "tsc -p tsconfig.build.json --module esnext --moduleResolution bundler --outDir dist/esm",
+    "build:cjs": "tsc -p tsconfig.build.json --module commonjs --moduleResolution node --outDir dist/cjs --declaration false",
+    "test": "npm run test:unit",
+    "test:unit": "jest --config jest.config.unit.cjs",
+    "test:integration:setup": "docker compose -f .docker/compose.test.yaml up -d --wait mongo",
+    "test:integration": "jest --config jest.config.integration.cjs",
+    "test:integration:teardown": "docker compose -f .docker/compose.test.yaml down --remove-orphans",
+    "test:watch": "jest --config jest.config.unit.cjs --watch",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:cristiandouce/mongoose-voting.git"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "keywords": [
     "vote",
@@ -24,5 +45,14 @@
     "downvote",
     "census"
   ],
-  "license": "MIT"
+  "peerDependencies": {
+    "mongoose": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "mongoose": "^9.0.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.9.3"
+  }
 }
